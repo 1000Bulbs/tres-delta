@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["1000Bulbs", "Zachary Danger Campbell"]
   spec.email         = ["zacharydangercampbell@gmail.com"]
   spec.description   = %q{A Ruby client for ThreeDelta's credit card vault and payment gateway.}
-  # spec.summary       = %q{TODO: Write a gem summary}
+  spec.summary       = %q{A Ruby client for ThreeDelta's credit card vault and payment gateway.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
