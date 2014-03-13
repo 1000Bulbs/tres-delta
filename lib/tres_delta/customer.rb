@@ -1,7 +1,10 @@
 module TresDelta
   class Customer
-    def initialize(vault_key = nil)
-      @vault_key = vault_key
+    attr_reader :name
+
+    def initialize(params = {})
+      @vault_key = params[:vault_key] || nil
+      @name      = params[:name] || nil
     end
 
     def vault_key
