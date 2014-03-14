@@ -10,4 +10,12 @@ describe TresDelta::Vault do
   it "uses the WSDL from the global config" do
     expect(vault.wsdl).to eq(wsdl)
   end
+
+  describe ".create_customer" do
+    let(:response) { vault.create_customer(customer) }
+
+    it "is successful" do
+      expect(response.success?).to be_true
+    end
+  end
 end

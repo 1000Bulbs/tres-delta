@@ -9,6 +9,10 @@ module TresDelta
       @wsdl = wsdl
     end
 
+    def request(action, soap_body)
+      Response.create_from_action(action, client.call(action, message: soap_body))
+    end
+
     def client_credentials
       {
         "ClientCode" => config["client_code"],
@@ -17,8 +21,15 @@ module TresDelta
       }
     end
 
+    def location_identifier
+      {
+        'LocationCode' => config["location_code"],
+        'MerchantCode' => config["merchant_code"]
+      }
+    end
+
     def client
-      @client ||= ::Savon.client wsdl
+      @client ||= ::Savon.client(wsdl: wsdl, ssl_version: :SSLv3, ssl_verify_mode: :none, log: false)
     end
 
     def config
