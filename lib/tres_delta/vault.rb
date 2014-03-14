@@ -20,5 +20,38 @@ module TresDelta
         }
       }
     end
+
+    def add_stored_credit_card(customer, credit_card)
+      request(:add_stored_credit_card, add_stored_credit_card_params(customer, credit_card))
+    end
+
+    def add_stored_credit_card_params(customer, credit_card)
+      {
+        'clientCredentials'   => client_credentials,
+        'addStoredCardParams' => {
+          'CreditCard' => {
+            'CardAccountNumber' => credit_card.number,
+            'CardType'          => credit_card.type,
+            'Cardholder'        => {
+              'FirstName' => credit_card.name,
+              'LastName'  => nil
+            },
+            'ExpirationMonth'   => credit_card.expiration_month,
+            'ExpirationYear'    => credit_card.expiration_year,
+            'NameOnCard'        => credit_card.name,
+            'FriendlyName'      => credit_card.nickname
+          },
+          'CustomerIdentifier' => customer_identifier(customer)
+        }
+      }
+    end
+
+    def customer_identifier(customer)
+      {
+        'CustomerCode' => customer.vault_key,
+        'LocationCode' => config["location_code"],
+        'MerchantCode' => config["merchant_code"]
+      }
+    end
   end
 end

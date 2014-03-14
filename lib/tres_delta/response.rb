@@ -10,6 +10,10 @@ module TresDelta
       @response[:succeeded]
     end
 
+    def token
+      @response[:token]
+    end
+
     def self.create_from_action(action, response)
       self.new(response.body["#{action}_response".to_sym]["#{action}_result".to_sym])
     end

@@ -25,4 +25,36 @@ describe TresDelta::Vault do
       end
     end
   end
+
+  describe ".add_stored_credit_card" do
+    let(:customer) { TresDelta::Customer.new(name: 'Test Customer') }
+    let(:vault) { TresDelta::Vault.new }
+
+    before(:each) do
+      vault.create_customer(customer)
+    end
+
+    context "a good credit card" do
+      let(:good_visa) do
+        TresDelta::CreditCard.new({
+          number:           '4111111111111111',
+          expiration_month: '8',
+          expiration_year:  Time.now.strftime("%Y").to_i + 3,
+          name:             'Joe Customer',
+          type:             'Visa',
+          nickname:         'Test Visa, Yo.'
+        })
+      end
+
+      let(:response) { vault.add_stored_credit_card(customer, good_visa) }
+
+      it "saves the damn credit card" do
+        response.success?.should be_true
+      end
+
+      it "has a token" do
+        expect(response.token).to_not be_nil
+      end
+    end
+  end
 end
