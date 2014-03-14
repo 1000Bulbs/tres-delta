@@ -3,7 +3,6 @@ require 'savon'
 module TresDelta
   class Client
     attr_accessor :wsdl
-    attr_accessor :config
 
     def initialize(wsdl)
       @wsdl = wsdl
