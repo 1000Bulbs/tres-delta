@@ -68,5 +68,32 @@ describe TresDelta::Vault do
         expect(response.failure_reason).to eq(TresDelta::Errors::CARD_NUMBER_IN_USE)
       end
     end
+
+    context "bad type" do
+      let(:bad_visa) do
+        TresDelta::CreditCard.new({
+          number:           '4111111111111111',
+          expiration_month: '8',
+          expiration_year:  Time.now.strftime("%Y").to_i + 3,
+          name:             'Joe Customer',
+          type:             'MasterCard',
+          nickname:         'Test Visa, Yo.'
+        })
+      end
+
+      let(:response) { vault.add_stored_credit_card(customer, bad_visa) }
+
+      it "doesn't save the card" do
+        expect(response.success?).to be_false
+      end
+
+      it "has validation errors" do
+        expect(response.validation_failures.size).to be  > 0
+      end
+
+      it "has a failure reason" do
+        expect(response.failure_reason).to eq(TresDelta::Errors::VALIDATION_FAILED)
+      end
+    end
   end
 end

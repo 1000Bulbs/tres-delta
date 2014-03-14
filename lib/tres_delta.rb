@@ -11,5 +11,6 @@ require "tres_delta/vault"
 module TresDelta
   class Errors
     CARD_NUMBER_IN_USE = "CardNumberInUse"
+    VALIDATION_FAILED = "ValidationFailed"
   end
 end
