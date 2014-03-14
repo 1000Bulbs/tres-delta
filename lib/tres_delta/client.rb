@@ -29,6 +29,7 @@ module TresDelta
     end
 
     def client
+      # TODO: Make this configurable via file. Because right now this ain't secure. -_-
       @client ||= ::Savon.client(wsdl: wsdl, ssl_version: :SSLv3, ssl_verify_mode: :none, log: false)
     end
 
