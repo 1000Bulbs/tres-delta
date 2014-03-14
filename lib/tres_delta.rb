@@ -9,4 +9,7 @@ require "tres_delta/response"
 require "tres_delta/vault"
 
 module TresDelta
+  class Errors
+    CARD_NUMBER_IN_USE = "CardNumberInUse"
+  end
 end

@@ -10,8 +10,8 @@ module TresDelta
       @response[:succeeded]
     end
 
-    def token
-      @response[:token]
+    def method_missing(method, *args)
+      @response[method]
     end
 
     def self.create_from_action(action, response)
