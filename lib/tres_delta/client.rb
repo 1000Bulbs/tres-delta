@@ -5,9 +5,8 @@ module TresDelta
     attr_accessor :wsdl
     attr_accessor :config
 
-    def initialize(wsdl, config)
-      @wsdl   = wsdl
-      @config = config
+    def initialize(wsdl)
+      @wsdl = wsdl
     end
 
     def client_credentials
@@ -20,6 +19,10 @@ module TresDelta
 
     def client
       @client ||= ::Savon.client wsdl
+    end
+
+    def config
+      Config.config
     end
   end
 end

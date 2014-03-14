@@ -10,9 +10,13 @@ describe TresDelta::Client do
     }
   end
 
-  let(:client) { TresDelta::Client.new(wsdl, config) }
+  let(:client) { TresDelta::Client.new(wsdl) }
 
   describe "#client_credentials" do
+    before(:each) do
+      TresDelta::Config.config = config
+    end
+
     it "uses the credentials passed into it" do
       client.client_credentials.should == {
         "ClientCode" => config["client_code"],
