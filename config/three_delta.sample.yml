@@ -1,0 +1,9 @@
+---
+client_code: User
+user_name: Linxtrans
+password: Sample3c0de
+merchant_code: User
+location_code: Location1
+terminal_code: Terminal1
+management_wsdl: https://services.PWSDemo.com/CreditCardManagementService.svc?wsdl
+transaction_wsdl: https://services.PWSDemo.com/CreditCardTransactionService.svc?wsdl
