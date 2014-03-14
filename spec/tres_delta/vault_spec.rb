@@ -12,10 +12,17 @@ describe TresDelta::Vault do
   end
 
   describe ".create_customer" do
-    let(:response) { vault.create_customer(customer) }
+    let!(:response) { vault.create_customer(customer) }
 
     it "is successful" do
       expect(response.success?).to be_true
+    end
+
+    context "try to create a customer again" do
+      it "fails horribly" do
+        repeat_response = vault.create_customer(customer)
+        expect(repeat_response.success?).to be_false
+      end
     end
   end
 end
