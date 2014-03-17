@@ -22,7 +22,7 @@ module TresDelta
 
     def credit_card_params(credit_card)
       {
-        'BillingAddress'               => billing_address_params(credit_card.billing_address),
+        'cc:BillingAddress'            => billing_address_params(credit_card.billing_address),
         'cc:CardAccountNumber'         => credit_card.number,
         'cc:ExpirationMonth'           => credit_card.expiration_month,
         'cc:ExpirationYear'            => credit_card.expiration_year,
@@ -34,7 +34,7 @@ module TresDelta
 
     def billing_address_params(billing_address)
       {
-        'PostalCode' => billing_address.zip_code
+        'cc:PostalCode' => billing_address.zip_code
       }
     end
 

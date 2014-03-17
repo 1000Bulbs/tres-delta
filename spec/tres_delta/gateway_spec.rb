@@ -49,26 +49,34 @@ describe TresDelta::Gateway do
 
       it "passes aip code avs" do
         expect(response.success?).to be_true
-        p response
       end
     end
 
     context "zip code failure" do
       let(:zip_code) { zip_code_failure }
 
-      it "fails the zip code avs"
+      it "fails the zip code avs" do
+        expect(response.success?).to be_true
+        expect(response.postal_code_avs_response).to eq("NotMatched")
+      end
     end
 
     context "zip code unavailable" do
       let(:zip_code) { zip_code_unavailable }
 
-      it "doesn't really fail the avs check"
+      it "doesn't really fail the avs check" do
+        expect(response.success?).to be_true
+        expect(response.postal_code_avs_response).to eq("Unavailable")
+      end
     end
 
     context "zip code avs error" do
       let(:zip_code) { zip_code_error }
 
-      it "doesn't fail per se"
+      it "doesn't fail per se" do
+        expect(response.success?).to be_true
+        expect(response.postal_code_avs_response).to eq("Error")
+      end
     end
   end
 end
