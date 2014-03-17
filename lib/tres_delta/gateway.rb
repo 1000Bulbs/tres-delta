@@ -34,7 +34,8 @@ module TresDelta
 
     def billing_address_params(billing_address)
       {
-        'cc:PostalCode' => billing_address.zip_code
+        'cc:AddressLine1' => billing_address.address,
+        'cc:PostalCode'   => billing_address.zip_code
       }
     end
 
