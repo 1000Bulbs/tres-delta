@@ -47,7 +47,11 @@ module TresDelta
     end
 
     def savon_overrides
-      { namespaces: { 'xmlns:cc' => 'http://schemas.datacontract.org/2004/07/ThreeDelta.Web.Services.ECLinx.Definitions' } }
+      {
+        namespaces: {
+          'xmlns:cc' => 'http://schemas.datacontract.org/2004/07/ThreeDelta.Web.Services.ECLinx.Definitions'
+        }
+      }
     end
   end
 end
