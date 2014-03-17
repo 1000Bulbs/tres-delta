@@ -7,6 +7,17 @@ describe TresDelta::Vault do
   let(:name) { SecureRandom.hex(4) }
   let(:vault) { TresDelta::Vault.new }
 
+  let(:good_visa) do
+    TresDelta::CreditCard.new({
+      number:           '4111111111111111',
+      expiration_month: '8',
+      expiration_year:  Time.now.strftime("%Y").to_i + 3,
+      name:             'Joe Customer',
+      type:             'Visa',
+      nickname:         'Test Visa, Yo.'
+    })
+  end
+
   it "uses the WSDL from the global config" do
     expect(vault.wsdl).to eq(wsdl)
   end
@@ -29,16 +40,6 @@ describe TresDelta::Vault do
   describe ".add_stored_credit_card" do
     let(:customer) { TresDelta::Customer.new(name: 'Test Customer') }
     let(:vault) { TresDelta::Vault.new }
-    let(:good_visa) do
-      TresDelta::CreditCard.new({
-        number:           '4111111111111111',
-        expiration_month: '8',
-        expiration_year:  Time.now.strftime("%Y").to_i + 3,
-        name:             'Joe Customer',
-        type:             'Visa',
-        nickname:         'Test Visa, Yo.'
-      })
-    end
 
     before(:each) do
       vault.create_customer(customer)
@@ -93,6 +94,59 @@ describe TresDelta::Vault do
 
       it "has a failure reason" do
         expect(response.failure_reason).to eq(TresDelta::Errors::VALIDATION_FAILED)
+      end
+    end
+  end
+
+  describe "get_stored_credit_card", :focus => true do
+    let(:include_card_number) { false }
+    let(:response) { vault.get_stored_credit_card(customer, token, include_card_number) }
+
+    before(:each) do
+      vault.create_customer(customer)
+    end
+
+    context "card doesn't exist" do
+      let(:token) { SecureRandom.hex(6) } # random, lol
+
+      it "fails" do
+        expect(response.success?).to be_false
+        expect(response.failure_reason).to eq('CreditCardDoesNotExist')
+      end
+    end
+
+    context "card exists" do
+      let(:token) { vault.add_stored_credit_card(customer, good_visa).token }
+      let(:card_data) { response.credit_card }
+
+      context "card number not included" do
+        it "is successful" do
+          expect(response.success?).to be_true
+        end
+
+        it "contains the details of the credit card" do
+          expect(card_data[:expiration_month]).to eq(good_visa.expiration_month.to_s)
+          expect(card_data[:expiration_year]).to eq(good_visa.expiration_year.to_s)
+          expect(card_data[:name_on_card]).to eq(good_visa.name)
+          expect(card_data[:friendly_name]).to eq(good_visa.nickname)
+          expect(card_data[:token]).to eq(token)
+        end
+
+        it "doesn't contain the credit card number" do
+          expect(card_data[:card_account_number]).to be_nil
+        end
+      end
+
+      context "card number included" do
+        let(:include_card_number) { true }
+
+        it "is successful" do
+          expect(response.success?).to be_true
+        end
+
+        it "contains the credit card number" do
+          expect(card_data[:card_account_number]).to eq(good_visa.number)
+        end
       end
     end
   end

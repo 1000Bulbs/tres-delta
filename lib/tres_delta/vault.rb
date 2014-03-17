@@ -53,5 +53,20 @@ module TresDelta
         'MerchantCode' => config["merchant_code"]
       }
     end
+
+    def get_stored_credit_card(customer, token, include_card_number = false)
+      request(:get_stored_credit_card, get_stored_credit_card_params(customer, token, include_card_number))
+    end
+
+    def get_stored_credit_card_params(customer, token, include_card_number)
+      {
+        'clientCredentials'         => client_credentials,
+        'getStoredCreditCardParams' => {
+          'CustomerIdentifier' => customer_identifier(customer),
+          'RetrieveCardNumber' => include_card_number ? 'true' : 'false',
+          'Token' => token
+        }
+      }
+    end
   end
 end
