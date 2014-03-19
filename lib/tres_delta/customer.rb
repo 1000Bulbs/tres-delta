@@ -10,5 +10,17 @@ module TresDelta
     def vault_key
       @vault_key ||= SecureRandom.hex(12)
     end
+
+    class << self
+      def create(params = {})
+        Customer.new(params).tap do |customer|
+         unless Vault.new.create_customer(customer).success?
+            raise InvalidCustomer
+          end
+        end
+      end
+    end
+
+    class InvalidCustomer < Exception; end
   end
 end
