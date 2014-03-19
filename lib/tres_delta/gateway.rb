@@ -4,6 +4,29 @@ module TresDelta
       @wsdl = Config.config['transaction_wsdl']
     end
 
+    def authorize(transaction_key, credit_card, amount, order_number, customer)
+      request :authorize, authorize_params(transaction_key, credit_card, amount, order_number, customer)
+    end
+
+    def authorize_params(transaction_key, credit_card, amount, order_number, customer)
+      {
+        'clientCredentials' => client_credentials,
+        'authorizeParams'   => {
+          'AddOrUpdateCard'       => 'true',
+          'CreditCardTransaction' => {
+            'CreditCard'   => credit_card_params(credit_card),
+            'CurrencyCode' => 'USDollars',
+            'StoredCardIdentifier' => {
+              'CustomerCode' => customer.vault_key
+            },
+            'TotalAmount' => amount,
+            'TransactionKey' => transaction_key
+          },
+          'TerminalIdentifier' => terminal_identifier
+        }
+      }
+    end
+
     def card_verification(transaction_key, credit_card)
       request(:card_verification, card_verification_params(transaction_key, credit_card))
     end

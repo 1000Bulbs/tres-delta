@@ -4,6 +4,10 @@ describe TresDelta::Gateway do
   let(:gateway) { TresDelta::Gateway.new }
   let(:transaction_key) { SecureRandom.hex(6) }
   let(:customer) { TresDelta::Customer.new(name: 'FOO BAR') }
+  let(:good_address) { "10124 Brentridge Ct" }
+
+  # arbitrary: Cisco, TX
+  let(:zip_code_good) { '76437' }
 
   let(:credit_card) do
     TresDelta::CreditCard.new({
@@ -30,8 +34,6 @@ describe TresDelta::Gateway do
   end
 
   describe "credit card zip code verification" do
-    # arbitrary: Cisco, TX
-    let(:zip_code_good) { '76437' }
 
     # magic numbers, see ThreeDelta docs
     let(:zip_code_failure) { '20151' }
@@ -79,7 +81,6 @@ describe TresDelta::Gateway do
   end
 
   describe "credit card address verificaiton" do
-    let(:good_address) { "10124 Brentridge Ct" }
     let(:bad_address) { "14151 Brentridge Ct" }
     let(:address_params) { { :address => address } }
 
@@ -100,6 +101,41 @@ describe TresDelta::Gateway do
       it "fails avs" do
         expect(response.success?).to be_true
         expect(response.address_avs_response).to eq('NotMatched')
+      end
+    end
+  end
+
+  describe "authorize" do
+    let(:order_number) { SecureRandom.hex(6) }
+    let(:amount) { 13.37 }
+    let(:address_params) { { address: good_address, zip_code: zip_code_good} }
+    let(:response) { gateway.authorize(transaction_key, credit_card, amount, order_number, customer) }
+    let(:vault) { TresDelta::Vault.new }
+
+    before(:each) do
+      vault.create_customer(customer)
+    end
+
+    context "good transaction" do
+      it "is successful" do
+        expect(response.success?).to be_true
+      end
+    end
+
+    context "card declined" do
+      let(:amount) { "0.20" } # see 3Delta docs
+
+      it "isn't successful" do
+        expect(response.success?).to be_false
+      end
+    end
+
+    context "bad expiration" do
+      let(:amount) { "0.29" } # see 3Delta docs
+
+      it "isn't successful" do
+        expect(response.success?).to be_false
+        expect(response.credit_card_response_status).to eq('ExpirationDateIncorrect')
       end
     end
   end
