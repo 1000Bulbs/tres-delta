@@ -98,7 +98,7 @@ describe TresDelta::Vault do
     end
   end
 
-  describe "get_stored_credit_card", :focus => true do
+  describe "get_stored_credit_card" do
     let(:include_card_number) { false }
     let(:response) { vault.get_stored_credit_card(customer, token, include_card_number) }
 
