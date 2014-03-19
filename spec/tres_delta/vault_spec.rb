@@ -150,4 +150,30 @@ describe TresDelta::Vault do
       end
     end
   end
+
+  describe "get_token_for_card_number" do
+    let(:response) { vault.get_token_for_card_number(card_number, customer) }
+
+    context "credit card doesn't exist" do
+      let(:card_number) { '4111111111111111' }
+
+      it "isn't successful" do
+        expect(response.success?).to be_false
+      end
+    end
+
+    context "credit card does exist" do
+      let(:card_number) { good_visa.number }
+
+      let!(:token) { vault.create_customer(customer); vault.add_stored_credit_card(customer, good_visa).token }
+
+      it "is successful" do
+        expect(response.success?).to be_true
+      end
+
+      it "has the card's token" do
+        expect(response.token).to eq(token)
+      end
+    end
+  end
 end

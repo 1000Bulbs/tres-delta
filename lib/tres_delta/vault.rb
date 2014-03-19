@@ -68,5 +68,19 @@ module TresDelta
         }
       }
     end
+
+    def get_token_for_card_number(card_number, customer)
+      request(:get_token_for_card_number, get_token_for_card_number_params(card_number, customer))
+    end
+
+    def get_token_for_card_number_params(card_number, customer)
+      {
+        'clientCredentials'           => client_credentials,
+        'getTokenForCardNumberParams' => {
+          'AccountNumber'      => card_number,
+          'CustomerIdentifier' => customer_identifier(customer)
+        }
+      }
+    end
   end
 end
