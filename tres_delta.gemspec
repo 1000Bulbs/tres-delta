@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = TresDelta::VERSION
   spec.authors       = ["1000Bulbs", "Zachary Danger Campbell"]
   spec.email         = ["zacharydangercampbell@gmail.com"]
-  spec.description   = %q{A Ruby client for ThreeDelta's credit card vault and payment gateway.}
-  spec.summary       = %q{A Ruby client for ThreeDelta's credit card vault and payment gateway.}
-  spec.homepage      = ""
+  spec.description   = %q{A Ruby client for 3Delta's credit card vault and payment gateway.}
+  spec.summary       = %q{If you need to talk to 3Delta's credit card vault/payment gateway in Ruby... this is an ok start.}
+  spec.homepage      = "https://github.com/1000Bulbs/tres-delta"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
