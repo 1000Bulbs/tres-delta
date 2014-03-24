@@ -7,15 +7,19 @@ describe TresDelta::Vault do
   let(:name) { SecureRandom.hex(4) }
   let(:vault) { TresDelta::Vault.new }
 
-  let(:good_visa) do
-    TresDelta::CreditCard.new({
+  let(:good_visa_params) do
+    {
       number:           '4111111111111111',
       expiration_month: '8',
       expiration_year:  Time.now.strftime("%Y").to_i + 3,
       name:             'Joe Customer',
       type:             'Visa',
       nickname:         'Test Visa, Yo.'
-    })
+    }
+  end
+
+  let(:good_visa) do
+    TresDelta::CreditCard.new(good_visa_params)
   end
 
   it "uses the WSDL from the global config" do
@@ -173,6 +177,45 @@ describe TresDelta::Vault do
 
       it "has the card's token" do
         expect(response.token).to eq(token)
+      end
+    end
+  end
+
+  describe "update_stored_credit_card" do
+    let(:customer) { TresDelta::Customer.create(name: "Test Customer") }
+    let(:stored_card) { TresDelta::CreditCard.create(customer, good_visa_params) }
+    let(:token) { stored_card.token }
+    let(:new_nickname) { SecureRandom.hex(6) }
+    let(:new_name) { SecureRandom.hex(6) }
+    let(:new_expiration_month) { 9 }
+    let(:new_expiration_year) { Time.now.strftime("%Y").to_i + 5 }
+
+    let(:updated_params) do
+      good_visa_params.merge({
+        expiration_month: new_expiration_month,
+        expiration_year:  new_expiration_year,
+        nickname:         new_nickname,
+        name:             new_name,
+        token:            token
+      })
+    end
+
+    let(:updated_card) { TresDelta::CreditCard.new(updated_params) }
+
+    context "good information" do
+      let!(:response) { vault.update_stored_credit_card(customer, updated_card) }
+
+      it "succeeds" do
+        expect(response.success?).to be_true
+      end
+
+      let(:reloaded_card_details) { vault.get_stored_credit_card(customer, token).credit_card }
+
+      it "updates the card" do
+        expect(reloaded_card_details[:expiration_month].to_i).to eq(new_expiration_month)
+        expect(reloaded_card_details[:expiration_year].to_i).to eq(new_expiration_year)
+        expect(reloaded_card_details[:friendly_name]).to eq(new_nickname)
+        expect(reloaded_card_details[:name_on_card]).to eq(new_name)
       end
     end
   end

@@ -82,5 +82,30 @@ module TresDelta
         }
       }
     end
+
+    def update_stored_credit_card(customer, credit_card)
+      request(:update_stored_credit_card, update_stored_credit_card_params(customer, credit_card))
+    end
+
+    def update_stored_credit_card_params(customer, credit_card)
+      {
+        'clientCredentials'      => client_credentials,
+        'updateStoredCardParams' => {
+          'CreditCard' => {
+            'CardType' => credit_card.type,
+            'CardHolder' => {
+              'FirstName' => credit_card.name,
+              'Lastname'  => nil
+            },
+            'ExpirationMonth' => credit_card.expiration_month,
+            'ExpirationYear'  => credit_card.expiration_year,
+            'NameOnCard'      => credit_card.name,
+            'FriendlyName'    => credit_card.nickname,
+            'Token'           => credit_card.token
+          },
+          'CustomerIdentifier'     => customer_identifier(customer)
+        }
+      }
+    end
   end
 end
