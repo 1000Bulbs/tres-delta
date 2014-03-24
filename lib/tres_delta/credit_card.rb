@@ -5,7 +5,7 @@ module TresDelta
     attr_accessor :token
 
     def initialize(params = {})
-      @number           = params[:number]
+      @number           = params[:number] || params[:card_account_number]
       @expiration_month = params[:expiration_month]
       @expiration_year  = params[:expiration_year]
       @token            = params[:token]
@@ -24,8 +24,16 @@ module TresDelta
           credit_card.token = add_card.token
         end
       end
+
+      def find(customer, token, load_number = false)
+        stored_card_details = Vault.new.get_stored_credit_card(customer, token, load_number)
+        raise CreditCardNotFound unless stored_card_details.success?
+
+        CreditCard.new(stored_card_details.credit_card)
+      end
     end
   end
 
   class InvalidCreditCard < Exception; end
+  class CreditCardNotFound < Exception; end
 end
