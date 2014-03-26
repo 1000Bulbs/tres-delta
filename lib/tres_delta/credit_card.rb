@@ -1,6 +1,6 @@
 module TresDelta
   class CreditCard
-    attr_reader :number, :expiration_month, :expiration_year, :name, :billing_address, :type, :nickname
+    attr_reader :number, :expiration_month, :expiration_year, :name, :billing_address, :type, :nickname, :customer
 
     attr_accessor :token
 
@@ -13,6 +13,15 @@ module TresDelta
       @billing_address  = Address.new(params[:billing_address] || {})
       @type             = params[:type]
       @nickname         = params[:nickname]
+      @customer         = params[:customer] || Customer.new
+    end
+
+    def save
+      if token.nil?
+        Vault.add_stored_credit_card(customer, self).success?
+      else
+        Vault.update_stored_credit_card(customer, self).success?
+      end
     end
 
     class << self

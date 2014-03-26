@@ -10,7 +10,8 @@ describe TresDelta::CreditCard do
       expiration_year:  Time.now.strftime("%Y").to_i + 3,
       name:             'Joe Customer',
       type:             'MasterCard',
-      nickname:         'Test Visa, Yo.'
+      nickname:         'Test Visa, Yo.',
+      customer:         customer
     }
   end
 
@@ -21,7 +22,8 @@ describe TresDelta::CreditCard do
       expiration_year:  Time.now.strftime("%Y").to_i + 3,
       name:             'Joe Customer',
       type:             'Visa',
-      nickname:         'Test Visa, Yo.'
+      nickname:         'Test Visa, Yo.',
+      customer:         customer
     }
   end
 
@@ -45,7 +47,7 @@ describe TresDelta::CreditCard do
     end
   end
 
-  describe "#find", :wip => true do
+  describe "#find" do
     context "card exists" do
       let(:token) { credit_card.token }
       let(:found_card) { TresDelta::CreditCard.find(customer, token, true) }
@@ -64,6 +66,48 @@ describe TresDelta::CreditCard do
 
       it "raises an error" do
         expect { TresDelta::CreditCard.find(customer, token) }.to raise_exception(TresDelta::CreditCardNotFound)
+      end
+    end
+  end
+
+  describe ".save" do
+    let(:credit_card) { TresDelta::CreditCard.new(params) }
+    let(:result) { credit_card.save }
+    context "card hasn't been tokenized" do
+      context "bad data" do
+        let(:params) { bad_params }
+
+        it "returns false" do
+          expect(result).to be_false
+        end
+      end
+
+      context "good data" do
+        let(:params) { good_params }
+
+        it "returns true" do
+          expect(result).to be_true
+        end
+      end
+    end
+
+    context "card has been tokenized" do
+      let(:token) { TresDelta::CreditCard.create(customer, good_params).token }
+
+      context "good data" do
+        let(:params) { good_params.merge(:token => token) }
+
+        it "returns true" do
+          expect(result).to be_true
+        end
+      end
+
+      context "bad data" do
+        let(:params) { bad_params.merge(:token => token, :expiration_month => 13) }
+
+        it "returns false" do
+          expect(result).to be_false
+        end
       end
     end
   end
