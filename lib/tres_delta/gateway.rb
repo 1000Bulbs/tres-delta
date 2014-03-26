@@ -14,18 +14,18 @@ module TresDelta
         {
           'clientCredentials' => client_credentials,
           'authorizeParams'   => {
-          'AddOrUpdateCard'       => 'true',
-          'CreditCardTransaction' => {
-          'CreditCard'   => credit_card_params(credit_card),
-          'CurrencyCode' => 'USDollars',
-          'StoredCardIdentifier' => {
-          'CustomerCode' => customer.vault_key
-        },
-          'TotalAmount' => amount,
-          'TransactionKey' => transaction_key
-        },
-          'TerminalIdentifier' => terminal_identifier
-        }
+            'AddOrUpdateCard'       => 'true',
+            'CreditCardTransaction' => {
+              'CreditCard'   => credit_card_params(credit_card),
+              'CurrencyCode' => 'USDollars',
+              'StoredCardIdentifier' => {
+                'CustomerCode' => customer.vault_key
+              },
+              'TotalAmount' => amount,
+              'TransactionKey' => transaction_key
+            },
+            'TerminalIdentifier' => terminal_identifier
+          }
         }
       end
 
@@ -37,11 +37,11 @@ module TresDelta
         {
           'clientCredentials'      => client_credentials,
           'cardVerificationParams' => {
-          'AddOrUpdateCard' => 'false',
-          'CreditCard'      => credit_card_params(credit_card),
-          'TerminalIdentifier'   => terminal_identifier,
-          'TransactionKey'       => transaction_key
-        }
+            'AddOrUpdateCard'      => 'false',
+            'CreditCard'           => credit_card_params(credit_card),
+            'TerminalIdentifier'   => terminal_identifier,
+            'TransactionKey'       => transaction_key
+          }
         }
       end
 
@@ -75,8 +75,8 @@ module TresDelta
       def savon_overrides
         {
           namespaces: {
-          'xmlns:cc' => 'http://schemas.datacontract.org/2004/07/ThreeDelta.Web.Services.ECLinx.Definitions'
-        }
+            'xmlns:cc' => 'http://schemas.datacontract.org/2004/07/ThreeDelta.Web.Services.ECLinx.Definitions'
+          }
         }
       end
     end

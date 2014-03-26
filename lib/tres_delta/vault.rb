@@ -14,12 +14,12 @@ module TresDelta
         {
           'clientCredentials' => client_credentials,
           'createCustomerParams' => {
-          'Customer' => {
-          'Code' => customer.vault_key,
-          'Name' => customer.name
-        },
-          'LocationIdentifier' => location_identifier
-        }
+            'Customer' => {
+              'Code' => customer.vault_key,
+              'Name' => customer.name
+            },
+            'LocationIdentifier' => location_identifier
+          }
         }
       end
 
@@ -31,20 +31,20 @@ module TresDelta
         {
           'clientCredentials'   => client_credentials,
           'addStoredCardParams' => {
-          'CreditCard' => {
-          'CardAccountNumber' => credit_card.number,
-          'CardType'          => credit_card.type,
-          'Cardholder'        => {
-          'FirstName' => credit_card.name,
-          'LastName'  => nil
-        },
-          'ExpirationMonth'   => credit_card.expiration_month,
-          'ExpirationYear'    => credit_card.expiration_year,
-          'NameOnCard'        => credit_card.name,
-          'FriendlyName'      => credit_card.nickname
-        },
-          'CustomerIdentifier' => customer_identifier(customer)
-        }
+            'CreditCard' => {
+              'CardAccountNumber' => credit_card.number,
+              'CardType'          => credit_card.type,
+              'Cardholder'        => {
+                'FirstName' => credit_card.name,
+                'LastName'  => nil
+              },
+              'ExpirationMonth'   => credit_card.expiration_month,
+              'ExpirationYear'    => credit_card.expiration_year,
+              'NameOnCard'        => credit_card.name,
+              'FriendlyName'      => credit_card.nickname
+            },
+            'CustomerIdentifier' => customer_identifier(customer)
+          }
         }
       end
 
@@ -64,10 +64,10 @@ module TresDelta
         {
           'clientCredentials'         => client_credentials,
           'getStoredCreditCardParams' => {
-          'CustomerIdentifier' => customer_identifier(customer),
-          'RetrieveCardNumber' => include_card_number ? 'true' : 'false',
-          'Token' => token
-        }
+            'CustomerIdentifier' => customer_identifier(customer),
+            'RetrieveCardNumber' => include_card_number ? 'true' : 'false',
+            'Token'              => token
+          }
         }
       end
 
@@ -79,9 +79,9 @@ module TresDelta
         {
           'clientCredentials'           => client_credentials,
           'getTokenForCardNumberParams' => {
-          'AccountNumber'      => card_number,
-          'CustomerIdentifier' => customer_identifier(customer)
-        }
+            'AccountNumber'      => card_number,
+            'CustomerIdentifier' => customer_identifier(customer)
+          }
         }
       end
 
@@ -93,20 +93,20 @@ module TresDelta
         {
           'clientCredentials'      => client_credentials,
           'updateStoredCardParams' => {
-          'CreditCard' => {
-          'CardType' => credit_card.type,
-          'CardHolder' => {
-          'FirstName' => credit_card.name,
-          'Lastname'  => nil
-        },
-          'ExpirationMonth' => credit_card.expiration_month,
-          'ExpirationYear'  => credit_card.expiration_year,
-          'NameOnCard'      => credit_card.name,
-          'FriendlyName'    => credit_card.nickname,
-          'Token'           => credit_card.token
-        },
-          'CustomerIdentifier'     => customer_identifier(customer)
-        }
+            'CreditCard' => {
+              'CardType' => credit_card.type,
+              'CardHolder' => {
+                'FirstName' => credit_card.name,
+                'Lastname'  => nil
+              },
+              'ExpirationMonth' => credit_card.expiration_month,
+              'ExpirationYear'  => credit_card.expiration_year,
+              'NameOnCard'      => credit_card.name,
+              'FriendlyName'    => credit_card.nickname,
+              'Token'           => credit_card.token
+            },
+            'CustomerIdentifier'     => customer_identifier(customer)
+          }
         }
       end
     end
