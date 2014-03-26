@@ -5,7 +5,7 @@ describe TresDelta::Vault do
   let(:wsdl) { config["management_wsdl"] }
   let(:customer) { TresDelta::Customer.new(name: name) }
   let(:name) { SecureRandom.hex(4) }
-  let(:vault) { TresDelta::Vault.new }
+  let(:vault) { TresDelta::Vault }
 
   let(:good_visa_params) do
     {
@@ -43,7 +43,6 @@ describe TresDelta::Vault do
 
   describe ".add_stored_credit_card" do
     let(:customer) { TresDelta::Customer.new(name: 'Test Customer') }
-    let(:vault) { TresDelta::Vault.new }
 
     before(:each) do
       vault.create_customer(customer)

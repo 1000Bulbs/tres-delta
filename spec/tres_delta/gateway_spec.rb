@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TresDelta::Gateway do
-  let(:gateway) { TresDelta::Gateway.new }
+  let(:gateway) { TresDelta::Gateway }
   let(:transaction_key) { SecureRandom.hex(6) }
   let(:customer) { TresDelta::Customer.new(name: 'FOO BAR') }
   let(:good_address) { "10124 Brentridge Ct" }
@@ -110,7 +110,7 @@ describe TresDelta::Gateway do
     let(:amount) { 13.37 }
     let(:address_params) { { address: good_address, zip_code: zip_code_good} }
     let(:response) { gateway.authorize(transaction_key, credit_card, amount, order_number, customer) }
-    let(:vault) { TresDelta::Vault.new }
+    let(:vault) { TresDelta::Vault }
 
     before(:each) do
       vault.create_customer(customer)

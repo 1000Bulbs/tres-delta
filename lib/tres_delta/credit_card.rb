@@ -18,7 +18,7 @@ module TresDelta
     class << self
       def create(customer, params = {})
         CreditCard.new(params).tap do |credit_card|
-          add_card = Vault.new.add_stored_credit_card(customer, credit_card)
+          add_card = Vault.add_stored_credit_card(customer, credit_card)
           raise InvalidCreditCard unless add_card.success?
 
           credit_card.token = add_card.token
@@ -26,7 +26,7 @@ module TresDelta
       end
 
       def find(customer, token, load_number = false)
-        stored_card_details = Vault.new.get_stored_credit_card(customer, token, load_number)
+        stored_card_details = Vault.get_stored_credit_card(customer, token, load_number)
         raise CreditCardNotFound unless stored_card_details.success?
 
         CreditCard.new(stored_card_details.credit_card)

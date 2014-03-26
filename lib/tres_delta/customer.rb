@@ -14,7 +14,7 @@ module TresDelta
     class << self
       def create(params = {})
         Customer.new(params).tap do |customer|
-         unless Vault.new.create_customer(customer).success?
+         unless Vault.create_customer(customer).success?
             raise InvalidCustomer
           end
         end

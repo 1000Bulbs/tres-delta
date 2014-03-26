@@ -3,7 +3,7 @@ require 'spec_helper'
 describe TresDelta::Client do
   let(:wsdl) { "http://example.com" }
 
-  let(:client) { TresDelta::Client.new(wsdl) }
+  let(:client) { TresDelta::Client }
   let(:config) { TresDelta::Config.config }
 
   describe "#client_credentials" do
