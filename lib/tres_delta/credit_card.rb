@@ -1,8 +1,8 @@
 module TresDelta
   class CreditCard
-    attr_reader :number, :expiration_month, :expiration_year, :name, :billing_address, :type, :nickname, :customer
+    attr_reader :number, :name, :billing_address, :type, :nickname, :customer
 
-    attr_accessor :token
+    attr_accessor :token, :expiration_month, :expiration_year
 
     def initialize(params = {})
       @number           = params[:number] || params[:card_account_number]
