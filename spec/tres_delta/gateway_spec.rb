@@ -5,6 +5,7 @@ describe TresDelta::Gateway do
   let(:transaction_key) { SecureRandom.hex(6) }
   let(:customer) { TresDelta::Customer.new(name: 'FOO BAR') }
   let(:good_address) { "10124 Brentridge Ct" }
+  let(:security_code) { nil }
 
   # arbitrary: Cisco, TX
   let(:zip_code_good) { '76437' }
@@ -17,7 +18,8 @@ describe TresDelta::Gateway do
       name:             'Joe Customer',
       type:             'Visa',
       nickname:         'Test Visa, Yo.',
-      billing_address:  address_params
+      billing_address:  address_params,
+      security_code:    security_code
     })
   end
 
@@ -43,6 +45,29 @@ describe TresDelta::Gateway do
     let(:address_params) { { :zip_code => zip_code } }
 
     let(:response) { gateway.card_verification(transaction_key, credit_card) }
+
+    context "checking card security code", :wip => true do
+      let(:zip_code) { zip_code_good }
+      subject { response.card_security_code_response }
+
+      context "no security code provided" do
+        it { should eq('None') }
+      end
+
+      context "security code provided" do
+        context "invalid security code" do
+          let(:security_code) { 123 } # fails in development mode
+
+          it { should eq('NotMatched') }
+        end
+
+        context "valid security code" do
+          let(:security_code) { 666 }
+
+          it { should eq('Matched') }
+        end
+      end
+    end
 
     context "good zip code" do
       let(:zip_code) { zip_code_good }
