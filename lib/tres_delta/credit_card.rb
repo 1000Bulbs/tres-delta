@@ -1,6 +1,6 @@
 module TresDelta
   class CreditCard
-    attr_reader :number, :name, :billing_address, :type, :nickname, :customer
+    attr_reader :number, :name, :billing_address, :type, :nickname, :customer, :security_code
 
     attr_accessor :token, :expiration_month, :expiration_year
 
@@ -14,6 +14,7 @@ module TresDelta
       @type             = params[:type]
       @nickname         = params[:nickname]
       @customer         = params[:customer] || Customer.new
+      @security_code    = params[:security_code]
     end
 
     def save
