@@ -58,6 +58,7 @@ describe TresDelta::CreditCard do
         expect(found_card.token).to eq(token)
         expect(found_card.expiration_month).to eq(credit_card.expiration_month)
         expect(found_card.expiration_year.to_i).to eq(credit_card.expiration_year)
+        expect(found_card.customer).to eq(customer)
       end
     end
 

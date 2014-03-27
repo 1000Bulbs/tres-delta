@@ -38,7 +38,7 @@ module TresDelta
         stored_card_details = Vault.get_stored_credit_card(customer, token, load_number)
         raise CreditCardNotFound unless stored_card_details.success?
 
-        CreditCard.new(stored_card_details.credit_card)
+        CreditCard.new(stored_card_details.credit_card.merge(customer: customer))
       end
     end
   end
