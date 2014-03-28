@@ -11,7 +11,7 @@ module TresDelta
       @token            = params[:token]
       @name             = params[:name]
       @billing_address  = Address.new(params[:billing_address] || {})
-      @type             = params[:type]
+      @type             = params[:type] || params[:card_type]
       @nickname         = params[:nickname]
       @customer         = params[:customer] || Customer.new
       @security_code    = params[:security_code]
