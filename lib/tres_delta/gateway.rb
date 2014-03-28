@@ -53,7 +53,7 @@ module TresDelta
           'cc:ExpirationYear'            => credit_card.expiration_year,
           'NameOnCard'                   => credit_card.name,
           'CardSecurityCode'             => credit_card.security_code,
-          'CardSecurityCodeIndicator'    => credit_card.security_code.nil? ? 'None' : 'Provided'
+          'CardSecurityCodeIndicator'    => credit_card.has_security_code? ? 'Provided' : 'None'
         }
       end
 

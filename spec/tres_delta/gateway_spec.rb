@@ -54,6 +54,15 @@ describe TresDelta::Gateway do
         it { should eq('None') }
       end
 
+      context "security code is empty string" do
+        let(:security_code) { "" }
+
+        it { should eq('None') }
+        it "should respond true", :wip => true do
+          expect(response.success?).to be_true
+        end
+      end
+
       context "security code provided" do
         context "invalid security code" do
           let(:security_code) { 123 } # fails in development mode
