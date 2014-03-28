@@ -25,6 +25,10 @@ module TresDelta
       end
     end
 
+    def has_security_code?
+      security_code.to_s.strip.size > 0
+    end
+
     class << self
       def create(customer, params = {})
         CreditCard.new(params).tap do |credit_card|

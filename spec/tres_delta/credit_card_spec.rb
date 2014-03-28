@@ -112,4 +112,29 @@ describe TresDelta::CreditCard do
       end
     end
   end
+
+  describe ".has_security_code" do
+    let(:credit_card) { TresDelta::CreditCard.new(security_code: security_code) }
+    subject { credit_card.has_security_code? }
+
+    context "code is nil" do
+      let(:security_code) { nil }
+      it { should be_false }
+    end
+
+    context "code is empty string" do
+      let(:security_code) { "" }
+      it { should be_false }
+    end
+
+    context "code is blank string" do
+      let(:security_code) { " " }
+      it { should be_false }
+    end
+
+    context "code is set" do
+      let(:security_code) { "123" }
+      it { should be_true }
+    end
+  end
 end
