@@ -46,7 +46,7 @@ describe TresDelta::Gateway do
 
     let(:response) { gateway.card_verification(transaction_key, credit_card) }
 
-    context "checking card security code", :wip => true do
+    context "checking card security code" do
       let(:zip_code) { zip_code_good }
       subject { response.card_security_code_response }
 
@@ -58,7 +58,7 @@ describe TresDelta::Gateway do
         let(:security_code) { "" }
 
         it { should eq('None') }
-        it "should respond true", :wip => true do
+        it "should respond true" do
           expect(response.success?).to be_true
         end
       end
