@@ -51,7 +51,7 @@ module TresDelta
           'cc:CardAccountNumber'         => credit_card.number,
           'cc:ExpirationMonth'           => credit_card.expiration_month,
           'cc:ExpirationYear'            => credit_card.expiration_year,
-          'NameOnCard'                   => credit_card.name,
+          'cc:NameOnCard'                => credit_card.name,
           'CardSecurityCode'             => credit_card.security_code,
           'CardSecurityCodeIndicator'    => credit_card.has_security_code? ? 'Provided' : 'None'
         }

@@ -6,6 +6,8 @@ describe TresDelta::Gateway do
   let(:customer) { TresDelta::Customer.new(name: 'FOO BAR') }
   let(:good_address) { "10124 Brentridge Ct" }
   let(:security_code) { nil }
+  let(:address) { good_address }
+  let(:address_params) { { :address => address } }
 
   # arbitrary: Cisco, TX
   let(:zip_code_good) { '76437' }
@@ -32,6 +34,18 @@ describe TresDelta::Gateway do
     end
 
     context "with a token" do
+    end
+  end
+
+  describe "#credit_card_params" do
+    subject(:params) { gateway.credit_card_params(credit_card) }
+
+    it "should include the card number" do
+      expect(params['cc:CardAccountNumber']).to eq('4242424242424242')
+    end
+
+    it "should include the name on the card" do
+      expect(params['cc:NameOnCard']).to eq('Joe Customer')
     end
   end
 
