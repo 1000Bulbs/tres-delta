@@ -34,7 +34,7 @@ module TresDelta
       end
 
       def default_savon_options
-        { wsdl: wsdl, ssl_version: :SSLv3, ssl_verify_mode: :none, log: false, open_timeout: 120, read_timeout: 120 }
+        { wsdl: wsdl, ssl_verify_mode: :none, log: false, open_timeout: 120, read_timeout: 120 }
       end
 
       def savon_overrides; end
