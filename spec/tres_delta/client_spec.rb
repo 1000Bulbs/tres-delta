@@ -8,17 +8,17 @@ describe TresDelta::Client do
 
   describe "#client_credentials" do
     it "uses the credentials passed into it" do
-      client.client_credentials.should == {
+      expect(client.client_credentials).to eq({
         "ClientCode" => config["client_code"],
         "Password" => config["password"],
         "UserName" => config["user_name"]
-      }
+      })
     end
   end
 
   describe "#client" do
     it "returns a Savon client for the WSDL" do
-      client.client.class.should == Savon::Client
+      expect(client.client.class).to eq(Savon::Client)
     end
   end
 end

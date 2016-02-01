@@ -80,7 +80,7 @@ describe TresDelta::CreditCard do
         let(:params) { bad_params }
 
         it "returns false" do
-          expect(result).to be_false
+          expect(result).to be_falsey
         end
       end
 
@@ -88,7 +88,7 @@ describe TresDelta::CreditCard do
         let(:params) { good_params }
 
         it "returns true" do
-          expect(result).to be_true
+          expect(result).to be_truthy
         end
       end
     end
@@ -100,7 +100,7 @@ describe TresDelta::CreditCard do
         let(:params) { good_params.merge(:token => token) }
 
         it "returns true" do
-          expect(result).to be_true
+          expect(result).to be_truthy
         end
       end
 
@@ -108,7 +108,7 @@ describe TresDelta::CreditCard do
         let(:params) { bad_params.merge(:token => token, :expiration_month => 13) }
 
         it "returns false" do
-          expect(result).to be_false
+          expect(result).to be_falsey
         end
       end
     end
@@ -120,22 +120,22 @@ describe TresDelta::CreditCard do
 
     context "code is nil" do
       let(:security_code) { nil }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context "code is empty string" do
       let(:security_code) { "" }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context "code is blank string" do
       let(:security_code) { " " }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context "code is set" do
       let(:security_code) { "123" }
-      it { should be_true }
+      it { is_expected.to be_truthy }
     end
   end
 end

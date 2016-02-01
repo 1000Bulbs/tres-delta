@@ -65,15 +65,15 @@ describe TresDelta::Gateway do
       subject { response.card_security_code_response }
 
       context "no security code provided" do
-        it { should eq('None') }
+        it { is_expected.to eq('None') }
       end
 
       context "security code is empty string" do
         let(:security_code) { "" }
 
-        it { should eq('None') }
+        it { is_expected.to eq('None') }
         it "should respond true" do
-          expect(response.success?).to be_true
+          expect(response.success?).to be_truthy
         end
       end
 
@@ -81,13 +81,13 @@ describe TresDelta::Gateway do
         context "invalid security code" do
           let(:security_code) { 123 } # fails in development mode
 
-          it { should eq('NotMatched') }
+          it { is_expected.to eq('NotMatched') }
         end
 
         context "valid security code" do
           let(:security_code) { 666 }
 
-          it { should eq('Matched') }
+          it { is_expected.to eq('Matched') }
         end
       end
     end
@@ -96,7 +96,7 @@ describe TresDelta::Gateway do
       let(:zip_code) { zip_code_good }
 
       it "passes aip code avs" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
       end
     end
 
@@ -104,7 +104,7 @@ describe TresDelta::Gateway do
       let(:zip_code) { zip_code_failure }
 
       it "fails the zip code avs" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
         expect(response.postal_code_avs_response).to eq("NotMatched")
       end
     end
@@ -113,7 +113,7 @@ describe TresDelta::Gateway do
       let(:zip_code) { zip_code_unavailable }
 
       it "doesn't really fail the avs check" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
         expect(response.postal_code_avs_response).to eq("Unavailable")
       end
     end
@@ -122,7 +122,7 @@ describe TresDelta::Gateway do
       let(:zip_code) { zip_code_error }
 
       it "doesn't fail per se" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
         expect(response.postal_code_avs_response).to eq("Error")
       end
     end
@@ -138,7 +138,7 @@ describe TresDelta::Gateway do
       let(:address) { good_address }
 
       it "passes avs" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
         expect(response.address_avs_response).to eq('Matched')
       end
     end
@@ -147,7 +147,7 @@ describe TresDelta::Gateway do
       let(:address) { bad_address }
 
       it "fails avs" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
         expect(response.address_avs_response).to eq('NotMatched')
       end
     end
@@ -166,7 +166,7 @@ describe TresDelta::Gateway do
 
     context "good transaction" do
       it "is successful" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
       end
     end
 
@@ -174,7 +174,7 @@ describe TresDelta::Gateway do
       let(:amount) { "0.20" } # see 3Delta docs
 
       it "isn't successful" do
-        expect(response.success?).to be_false
+        expect(response.success?).to be_falsey
       end
     end
 
@@ -182,7 +182,7 @@ describe TresDelta::Gateway do
       let(:amount) { "0.29" } # see 3Delta docs
 
       it "isn't successful" do
-        expect(response.success?).to be_false
+        expect(response.success?).to be_falsey
         expect(response.credit_card_response_status).to eq('ExpirationDateIncorrect')
       end
     end

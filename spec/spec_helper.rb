@@ -15,5 +15,4 @@ require 'yaml'
 TresDelta::Config.config = YAML.load_file(config_file)
 
 RSpec.configure do |config|
-  # TODO: CONFIGURE SOME RSPEC
 end

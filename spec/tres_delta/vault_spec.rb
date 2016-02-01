@@ -30,13 +30,13 @@ describe TresDelta::Vault do
     let!(:response) { vault.create_customer(customer) }
 
     it "is successful" do
-      expect(response.success?).to be_true
+      expect(response.success?).to be_truthy
     end
 
     context "try to create a customer again" do
       it "fails horribly" do
         repeat_response = vault.create_customer(customer)
-        expect(repeat_response.success?).to be_false
+        expect(repeat_response.success?).to be_falsey
       end
     end
   end
@@ -52,7 +52,7 @@ describe TresDelta::Vault do
       let(:response) { vault.add_stored_credit_card(customer, good_visa) }
 
       it "saves the damn credit card" do
-        response.success?.should be_true
+        expect(response.success?).to be_truthy
       end
 
       it "has a token" do
@@ -65,7 +65,7 @@ describe TresDelta::Vault do
       let(:response) { vault.add_stored_credit_card(customer, good_visa) }
 
       it "fails to save the card probably" do
-        expect(response.success?).to be_false
+        expect(response.success?).to be_falsey
       end
 
       it "has a card number in use failure reason" do
@@ -88,7 +88,7 @@ describe TresDelta::Vault do
       let(:response) { vault.add_stored_credit_card(customer, bad_visa) }
 
       it "doesn't save the card" do
-        expect(response.success?).to be_false
+        expect(response.success?).to be_falsey
       end
 
       it "has validation errors" do
@@ -113,7 +113,7 @@ describe TresDelta::Vault do
       let(:token) { SecureRandom.hex(6) } # random, lol
 
       it "fails" do
-        expect(response.success?).to be_false
+        expect(response.success?).to be_falsey
         expect(response.failure_reason).to eq('CreditCardDoesNotExist')
       end
     end
@@ -124,7 +124,7 @@ describe TresDelta::Vault do
 
       context "card number not included" do
         it "is successful" do
-          expect(response.success?).to be_true
+          expect(response.success?).to be_truthy
         end
 
         it "contains the details of the credit card" do
@@ -144,7 +144,7 @@ describe TresDelta::Vault do
         let(:include_card_number) { true }
 
         it "is successful" do
-          expect(response.success?).to be_true
+          expect(response.success?).to be_truthy
         end
 
         it "contains the credit card number" do
@@ -161,7 +161,7 @@ describe TresDelta::Vault do
       let(:card_number) { '4111111111111111' }
 
       it "isn't successful" do
-        expect(response.success?).to be_false
+        expect(response.success?).to be_falsey
       end
     end
 
@@ -171,7 +171,7 @@ describe TresDelta::Vault do
       let!(:token) { vault.create_customer(customer); vault.add_stored_credit_card(customer, good_visa).token }
 
       it "is successful" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
       end
 
       it "has the card's token" do
@@ -205,7 +205,7 @@ describe TresDelta::Vault do
       let!(:response) { vault.update_stored_credit_card(customer, updated_card) }
 
       it "succeeds" do
-        expect(response.success?).to be_true
+        expect(response.success?).to be_truthy
       end
 
       let(:reloaded_card_details) { vault.get_stored_credit_card(customer, token).credit_card }
