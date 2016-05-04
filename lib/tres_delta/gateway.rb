@@ -29,6 +29,28 @@ module TresDelta
         }
       end
 
+      def capture(transaction_key, customer_code, card_token, amount)
+        request :capture, capture_params(transaction_key, customer_code, card_token, amount)
+      end
+
+      def capture_params(transaction_key, customer_code, card_token, amount)
+        {
+          'clientCredentials' => client_credentials,
+          'captureParams'     => {
+            'CreditCardTransaction' => {
+              'CurrencyCode'         => 'USDollars',
+              'StoredCardIdentifier' => {
+                'CustomerCode' => customer_code,
+                'Token'        => card_token
+              },
+              'TotalAmount' => amount,
+              'TransactionKey' => transaction_key
+            },
+            'TerminalIdentifier'    => terminal_identifier
+          }
+        }
+      end
+
       def card_verification(transaction_key, credit_card)
         request(:card_verification, card_verification_params(transaction_key, credit_card))
       end

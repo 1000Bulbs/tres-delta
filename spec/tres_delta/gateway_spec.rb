@@ -187,4 +187,31 @@ describe TresDelta::Gateway do
       end
     end
   end
+
+  describe "capture" do
+    let(:order_number) { SecureRandom.hex(6) }
+    let(:amount) { 13.37 }
+    let(:address_params) { { address: good_address, zip_code: zip_code_good} }
+    let(:auth_response) { gateway.authorize(transaction_key, credit_card, amount, order_number, customer) }
+    let(:vault) { TresDelta::Vault }
+    let(:token) { auth_response.token }
+    let(:response) { gateway.capture(transaction_key, customer.vault_key, token, amount) }
+
+    before(:each) do
+      vault.create_customer(customer)
+    end
+
+    it "captures the authorization" do
+      expect(response.success?).to be_truthy
+    end
+
+    context "we try to capture even _more_ funds" do
+      let(:second_response) { gateway.capture(transaction_key, customer.vault_key, token, amount) }
+
+      it "captures the first request, but fails the second" do
+        expect(response.success?).to be_truthy
+        expect(second_response.success?).to be_falsey
+      end
+    end
+  end
 end
